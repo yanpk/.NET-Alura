@@ -10,7 +10,7 @@ namespace CasaDoCodigo.Repositories
     public class ProdutoRepository : BaseRepository<Produto>, IProdutoRepository
     {
         private readonly ICategoriaRepository _categoriaRep;
-        public ProdutoRepository(ICategoriaRepository categoriaRep , ApplicationContext contexto) : base(contexto)
+        public ProdutoRepository(ICategoriaRepository categoriaRep, ApplicationContext contexto) : base(contexto)
         {
             _categoriaRep = categoriaRep;
         }
@@ -18,6 +18,14 @@ namespace CasaDoCodigo.Repositories
         public IList<Produto> GetProdutos()
         {
             return dbSet.Include(t => t.Categoria).ToList();
+        }
+
+        public async Task<IList<Produto>> GetProdutos(string textSearch)
+        {
+            if (!string.IsNullOrEmpty(textSearch))
+                return await dbSet.Include(t => t.Categoria).Where(t => t.Nome.Contains(textSearch) || t.Categoria.Nome.Contains(textSearch)).ToListAsync();
+
+            return await dbSet.Include(t => t.Categoria).ToListAsync();
         }
 
         public async Task SaveProdutos(List<Livro> livros)

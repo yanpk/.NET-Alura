@@ -71,7 +71,7 @@ namespace CasaDoCodigo
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Pedido}/{action=BuscaProdutos}");
+                    template: "{controller=Pedido}/{action=BuscaProdutos}/");
             });
 
             serviceProvider.GetService<IDataService>().InicializaDB().Wait();
